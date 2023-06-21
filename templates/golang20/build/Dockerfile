@@ -1,4 +1,5 @@
 FROM golang:1.20.5-bullseye
+
 RUN apt-get update -y
 RUN apt-get install -y locales gcc \
         curl \
@@ -25,7 +26,6 @@ RUN mkdir /home/${USER} && chown ${USER}:${USER} /home/${USER}
 
 USER ${USER}
 RUN ./setup.sh
-USER ${USER}
 WORKDIR /home/${USER}
 RUN echo neofetch >> /home/${USER}/.bashrc
 
@@ -35,6 +35,9 @@ RUN mkdir -p /home/${USER}/.local/share/blesh && cp -Rf ble-nightly/* /home/${US
 
 
 #3rd
+USER root
+ENV GOBIN=${GOPATH}/bin
+ENV PATH=${PATH}:/usr/local/go/bin:${GOBIN}
 
 USER ${USER}
 WORKDIR /home/${USER}
