@@ -1,6 +1,5 @@
 FROM node:20-bullseye
-ARG USER=coder
-USER root
+
 RUN apt-get update -y
 RUN apt-get install -y locales \
 	curl \
@@ -11,13 +10,15 @@ RUN apt-get install -y locales \
         net-tools \
         neofetch \ 
         apt-utils
+ARG USER=coder
+
+RUN useradd --groups sudo --no-create-home --shell /bin/bash ${USER} \
+	&& echo "${USER} ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/${USER} \
+	&& chmod 0440 /etc/sudoers.d/${USER}
 #pretty
 WORKDIR /tmp
 RUN git clone --recursive https://github.com/andresgongora/synth-shell.git
 WORKDIR /tmp/synth-shell
-RUN useradd --groups sudo --no-create-home --shell /bin/bash ${USER} \
-	&& echo "${USER} ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/${USER} \
-	&& chmod 0440 /etc/sudoers.d/${USER}
 COPY ./setup.sh ./
 RUN chmod +x setup.sh
 RUN mkdir /home/${USER} && chown ${USER}:${USER} /home/${USER}
