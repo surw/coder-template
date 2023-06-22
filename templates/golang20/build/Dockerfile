@@ -1,4 +1,5 @@
 FROM golang:1.20.5-bullseye
+RUN echo 'PATH=${PATH}:/usr/local/sbin:/usr/sbin:/sbin' >> /etc/bash.bashrc
 
 RUN apt-get update -y
 RUN apt-get install -y locales gcc \
@@ -36,8 +37,8 @@ RUN mkdir -p /home/${USER}/.local/share/blesh && cp -Rf ble-nightly/* /home/${US
 
 #3rd
 USER root
-ENV GOBIN=${GOPATH}/bin
-ENV PATH=${PATH}:/usr/local/go/bin:${GOBIN}
+RUN echo 'GOBIN=${GOPATH}/bin' >> /etc/bash.bashrc
+RUN echo 'PATH=${PATH}:/usr/local/go/bin:${GOBIN}' >> /etc/bash.bashrc
 
 USER ${USER}
 WORKDIR /home/${USER}

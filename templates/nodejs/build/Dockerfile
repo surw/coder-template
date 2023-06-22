@@ -1,4 +1,5 @@
 FROM node:20-bullseye
+RUN echo 'PATH=${PATH}:/usr/local/sbin:/usr/sbin:/sbin' >> /etc/bash.bashrc
 
 RUN apt-get update -y
 RUN apt-get install -y locales \
