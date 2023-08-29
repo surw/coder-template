@@ -36,7 +36,10 @@ RUN mkdir -p /home/${USER}/.local/share/blesh && cp -Rf ble-nightly/* /home/${US
 
 
 #3rd
+RUN mkdir /home/${USER}/go -p
+
 USER root
+RUN echo GOPATH=/home/${USER}/go >> /etc/bash.bashrc
 RUN echo 'GOBIN=${GOPATH}/bin' >> /etc/bash.bashrc
 RUN echo 'PATH=${PATH}:/usr/local/go/bin:${GOBIN}' >> /etc/bash.bashrc
 
